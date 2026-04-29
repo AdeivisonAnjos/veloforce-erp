@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VELOFORCE - Artigos Esportivos | ERP PCP</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --primary: #f97316;
+      --primary-dark: #c2410c;
+      --secondary: #374151;
+      --warning: #f59e0b;
+      --danger: #dc2626;
+      --dark: #1f2937;
+      --gray: #4b5563;
+      --light: #ffffff;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --graphite-soft: #f3f4f6;
+      --orange-soft: #fff7ed;
+      --red-soft: #fef2f2;
+      --yellow-soft: #fffbeb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
+      color: var(--dark);
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    aside {
+      width: 270px;
+      background: linear-gradient(180deg, #111827, #374151);
+      color: white;
+      padding: 24px 18px;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand {
+      margin-bottom: 28px;
+    }
+
+    .brand h1 {
+      font-size: 25px;
+      margin-bottom: 6px;
+    }
+
+    .brand span {
+      color: #fed7aa;
+      font-size: 13px;
+    }
+
+    .nav button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #ffedd5;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 12px;
+      margin-bottom: 7px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      background: rgba(249,115,22,0.22);
+      color: white;
+    }
+
+    main {
+      margin-left: 270px;
+      width: calc(100% - 270px);
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .topbar h2 {
+      font-size: 28px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      padding: 11px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      background: var(--primary);
+      color: white;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+
+    .btn.secondary {
+      background: var(--secondary);
+    }
+
+    .btn.warning {
+      background: var(--warning);
+    }
+
+    .btn.danger {
+      background: var(--danger);
+    }
+
+    .btn.dark {
+      background: var(--dark);
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid.cards {
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      margin-bottom: 20px;
+    }
+
+    .grid.two {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+    }
+
+    .metric {
+      min-height: 132px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .metric small {
+      color: var(--gray);
+      font-weight: 700;
+    }
+
+    .metric strong {
+      font-size: 29px;
+      margin-top: 10px;
+      display: block;
+    }
+
+    .metric span {
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .metric.green { background: var(--orange-soft); }
+    .metric.blue { background: var(--graphite-soft); }
+    .metric.yellow { background: var(--yellow-soft); }
+    .metric.red { background: var(--red-soft); }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      background: white;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+      grid-column: span 4;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--gray);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .field.full {
+      grid-column: span 4;
+    }
+
+    .field.two {
+      grid-column: span 2;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--gray);
+      font-size: 12px;
+      text-transform: uppercase;
+      background: #f8fafc;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .tag {
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      display: inline-block;
+    }
+
+    .tag.green { background: #dcfce7; color: #166534; }
+    .tag.red { background: #fee2e2; color: #991b1b; }
+    .tag.yellow { background: #fef3c7; color: #92400e; }
+    .tag.blue { background: #dbeafe; color: #1e40af; }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .mini {
+      padding: 7px 9px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .product-img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+
+    .insight {
+      background: linear-gradient(135deg, #111827, #f97316);
+      color: white;
+      border: 0;
+    }
+
+    .insight p {
+      color: #ffedd5;
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+    .report-box {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 18px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .alert {
+      padding: 13px;
+      border-radius: 12px;
+      margin-top: 12px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      font-weight: 700;
+      display: none;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    .user-chip { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; padding: 10px 12px; border-radius: 999px; font-weight: 800; font-size: 13px; }
+    .login-screen { position: fixed; inset: 0; background: linear-gradient(135deg, #111827, #374151); display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+    .login-card { width: 100%; max-width: 460px; background: white; border-radius: 24px; padding: 28px; box-shadow: 0 25px 70px rgba(0,0,0,.28); border-top: 7px solid var(--primary); }
+    .login-card h1 { color: var(--dark); font-size: 30px; margin-bottom: 6px; }
+    .login-card p { color: var(--gray); line-height: 1.5; margin-bottom: 16px; }
+    .login-card .hint { background: #fff7ed; color: #9a3412; border: 1px solid #fed7aa; border-radius: 14px; padding: 12px; font-weight: 700; margin-bottom: 14px; }
+    .password-warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; border-radius: 12px; padding: 12px; margin: 12px 0; font-weight: 800; }
+
+
+    .permission-bar {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #9a3412;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .blocked {
+      opacity: 0.45;
+      pointer-events: none;
+      filter: grayscale(0.4);
+    }
+
+    @media (max-width: 1000px) {
+      aside {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      .app {
+        display: block;
+      }
+
+      main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .grid.cards,
+      .grid.two {
+        grid-template-columns: 1fr;
+      }
+
+      form {
+        grid-template-columns: 1fr;
+      }
+
+      .field,
+      .field.two,
+      .field.full,
+      textarea {
+        grid-column: span 1;
+      }
+    }
+
+    @media print {
+      aside, .top-actions, form, .nav, .actions, .no-print {
+        display: none !important;
+      }
+      main {
+        margin: 0;
+        width: 100%;
+      }
+      .section {
+        display: block;
+        page-break-after: always;
+      }
+      body {
+        background: white;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <h1>VELOFORCE</h1>
+      <p>Artigos Esportivos | Acesso ao ERP PCP</p>
+      <div class="hint">Primeiro acesso: use sua matrícula e a senha fácil <strong>123456</strong>.<br>Após entrar, será necessário alterar sua senha.</div>
+      <div class="field" style="margin-bottom:12px;"><label>Matrícula</label><input id="loginMatricula" placeholder="Ex.: ADM001" /></div>
+      <div class="field" style="margin-bottom:12px;"><label>Senha</label><input id="loginSenha" type="password" placeholder="Digite sua senha" /></div>
+      <button class="btn" style="width:100%;" onclick="fazerLogin()">Entrar no sistema</button>
+      <p style="margin-top:14px; font-size:13px;">Acesso administrador inicial: matrícula <strong>ADM001</strong> e senha <strong>123456</strong>.</p>
+    </div>
+  </div>
+  <div id="trocaSenhaScreen" class="login-screen">
+    <div class="login-card">
+      <h1>Alteração obrigatória de senha</h1>
+      <div class="password-warning">É necessário alterar sua senha antes de continuar usando o sistema.</div>
+      <div class="field" style="margin-bottom:12px;"><label>Nova senha</label><input id="novaSenha" type="password" placeholder="Digite uma nova senha" /></div>
+      <div class="field" style="margin-bottom:12px;"><label>Confirmar nova senha</label><input id="confirmaSenha" type="password" placeholder="Confirme a nova senha" /></div>
+      <button class="btn" style="width:100%;" onclick="alterarSenhaObrigatoria()">Salvar nova senha</button>
+    </div>
+  </div>
+
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <h1>VELOFORCE</h1>
+        <span>Artigos Esportivos | ERP PCP • PMP • MRP • CRP</span>
+      </div>
+
+      <div class="nav">
+        <button class="active" onclick="showSection('dashboard', this)">📊 Dashboard</button>
+        <button onclick="showSection('produtos', this)">📦 Produto Pai</button>
+        <button onclick="showSection('bom', this)">🧱 BOM</button>
+        <button onclick="showSection('pmp', this)">📅 PMP</button>
+        <button onclick="showSection('estoque', this)">🏭 Estoque</button>
+        <button onclick="showSection('recursos', this)">⚙️ Recursos</button>
+        <button onclick="showSection('mrp', this)">🧠 MRP</button>
+        <button onclick="showSection('crp', this)">📈 CRP</button>
+        <button onclick="showSection('usuarios', this)">👥 Usuários</button>
+        <button onclick="showSection('relatorios', this)">📄 Relatórios</button>
+      </div>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div>
+          <h2 id="pageTitle">Dashboard Executivo</h2>
+          <p style="color: var(--gray); margin-top: 6px;">Sistema inteligente para artigos esportivos: musculação, ginástica, caneleiras e pesos.</p>
+        </div>
+
+        <div class="top-actions">
+          <span id="userInfoTop" class="user-chip">Usuário não autenticado</span>
+          <button class="btn secondary" onclick="salvarLocal()">Salvar dados</button>
+          <button class="btn warning" onclick="carregarLocal(true)">Carregar dados</button>
+          <button class="btn dark" onclick="window.print()">Gerar PDF</button>
+          <button class="btn danger" onclick="logout()">Sair</button>
+        </div>
+      </div>
+
+      <div id="alert" class="alert"></div>
+
+      <section id="dashboard" class="section active">
+        <div class="grid cards">
+          <div class="card metric green">
+            <small>Economia estimada</small>
+            <strong id="mEconomia">R$ 0,00</strong>
+            <span>Base: redução de desperdício e estoque parado.</span>
+          </div>
+          <div class="card metric blue">
+            <small>Produção planejada</small>
+            <strong id="mProducao">0</strong>
+            <span>Total do PMP cadastrado.</span>
+          </div>
+          <div class="card metric yellow">
+            <small>Itens críticos</small>
+            <strong id="mCriticos">0</strong>
+            <span>Materiais abaixo do estoque de segurança.</span>
+          </div>
+          <div class="card metric red">
+            <small>Gargalos CRP</small>
+            <strong id="mGargalos">0</strong>
+            <span>Recursos com capacidade insuficiente.</span>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <h3>Demanda planejada</h3>
+            <canvas id="chartDemanda"></canvas>
+          </div>
+          <div class="card">
+            <h3>Saúde do estoque</h3>
+            <canvas id="chartEstoque"></canvas>
+          </div>
+        </div>
+
+        <div class="card insight" style="margin-top:18px;">
+          <h3>Visão estratégica</h3>
+          <p id="visaoEstrategica">
+            O VELOFORCE - Artigos Esportivos transforma dados industriais em decisão. Para uma fábrica de artigos esportivos, ele ajuda a planejar pesos de musculação, equipamentos de ginástica e caneleiras com menos desperdício, melhor uso de matéria-prima, compras no momento certo, redução de estoque parado e aumento da margem operacional.
+          </p>
+        </div>
+      </section>
+
+      <section id="produtos" class="section">
+        <div class="card">
+          <h3>Cadastro do Produto Pai</h3>
+          <form id="formProduto">
+            <input type="hidden" id="produtoId" />
+            <div class="field">
+              <label>Código</label>
+              <input id="produtoCodigo" placeholder="Ex.: PA001" required />
+            </div>
+            <div class="field">
+              <label>Nome do Produto</label>
+              <input id="produtoNome" placeholder="Ex.: Peso de Musculação 10kg" required />
+            </div>
+            <div class="field">
+              <label>Unidade</label>
+              <select id="produtoUnidade">
+                <option>un</option>
+                <option>kg</option>
+                <option>lt</option>
+                <option>mm</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Imagem URL</label>
+              <input id="produtoImagem" placeholder="Cole a URL da imagem" />
+            </div>
+            <div class="field two">
+              <label>Custo estimado unitário</label>
+              <input id="produtoCusto" type="number" step="0.01" placeholder="0.00" />
+            </div>
+            <div class="field two">
+              <label>Preço de venda</label>
+              <input id="produtoPreco" type="number" step="0.01" placeholder="0.00" />
+            </div>
+            <div class="field full">
+              <button class="btn" type="submit">Salvar / Atualizar Produto</button>
+            </div>
+          </form>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Imagem</th>
+                  <th>Código</th>
+                  <th>Produto</th>
+                  <th>Unidade</th>
+                  <th>Custo</th>
+                  <th>Venda</th>
+                  <th>Margem</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="listaProdutos"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="bom" class="section">
+        <div class="card">
+          <h3>BOM - Estrutura do Produto Pai</h3>
+          <form id="formBom">
+            <input type="hidden" id="bomId" />
+            <div class="field">
+              <label>Produto Pai</label>
+              <select id="bomProduto"></select>
+            </div>
+            <div class="field">
+              <label>Item / Componente</label>
+              <input id="bomItem" placeholder="Ex.: Ferro fundido, borracha, pintura, etiqueta" required />
+            </div>
+            <div class="field">
+              <label>Tipo / Especificação</label>
+              <input id="bomTipo" placeholder="Ex.: matéria-prima" />
+            </div>
+            <div class="field">
+              <label>Unidade</label>
+              <select id="bomUnidade">
+                <option>un</option>
+                <option>kg</option>
+                <option>lt</option>
+                <option>mm</option>
+              </select>
+            </div>
+            <div class="field two">
+              <label>Quantidade por produto</label>
+              <input id="bomQtd" type="number" step="0.0001" placeholder="Ex.: 0.25" required />
+            </div>
+            <div class="field two">
+              <label>Imagem do componente</label>
+              <input id="bomImagem" placeholder="URL da imagem" />
+            </div>
+            <div class="field full">
+              <button class="btn" type="submit">Salvar / Atualizar BOM</button>
+            </div>
+          </form>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Imagem</th>
+                  <th>Produto Pai</th>
+                  <th>Item</th>
+                  <th>Tipo</th>
+                  <th>Unidade</th>
+                  <th>Qtd por Produto</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="listaBom"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="pmp" class="section">
+        <div class="card">
+          <h3>PMP - Plano Mestre de Produção</h3>
+          <form id="formPmp">
+            <input type="hidden" id="pmpId" />
+            <div class="field">
+              <label>Produto</label>
+              <select id="pmpProduto"></select>
+            </div>
+            <div class="field">
+              <label>Período</label>
+              <input id="pmpPeriodo" placeholder="Ex.: Semana 1 / Maio 2026" required />
+            </div>
+            <div class="field">
+              <label>Demanda planejada</label>
+              <input id="pmpDemanda" type="number" step="1" required />
+            </div>
+            <div class="field">
+              <label>Recebimentos programados</label>
+              <input id="pmpRecebimentos" type="number" step="1" value="0" />
+            </div>
+            <div class="field full">
+              <button class="btn" type="submit">Salvar / Atualizar PMP</button>
+            </div>
+          </form>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Produto</th>
+                  <th>Período</th>
+                  <th>Demanda</th>
+                  <th>Recebimentos</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="listaPmp"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="estoque" class="section">
+        <div class="card">
+          <h3>Estoque Inicial e Segurança</h3>
+          <form id="formEstoque">
+            <input type="hidden" id="estoqueId" />
+            <div class="field">
+              <label>Item / Material</label>
+              <input id="estoqueItem" placeholder="Ex.: Ferro fundido" required />
+            </div>
+            <div class="field">
+              <label>Unidade</label>
+              <select id="estoqueUnidade">
+                <option>un</option>
+                <option>kg</option>
+                <option>lt</option>
+                <option>mm</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Estoque atual</label>
+              <input id="estoqueAtual" type="number" step="0.0001" required />
+            </div>
+            <div class="field">
+              <label>Estoque de segurança</label>
+              <input id="estoqueSeguranca" type="number" step="0.0001" required />
+            </div>
+            <div class="field two">
+              <label>Custo unitário</label>
+              <input id="estoqueCusto" type="number" step="0.01" value="0" />
+            </div>
+            <div class="field two">
+              <label>Lead time compra/produção</label>
+              <input id="estoqueLead" placeholder="Ex.: 7 dias" />
+            </div>
+            <div class="field full">
+              <button class="btn" type="submit">Salvar / Atualizar Estoque</button>
+            </div>
+          </form>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Unidade</th>
+                  <th>Atual</th>
+                  <th>Segurança</th>
+                  <th>Status</th>
+                  <th>Custo Unit.</th>
+                  <th>Lead Time</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="listaEstoque"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="recursos" class="section">
+        <div class="card">
+          <h3>Recursos Humanos e Máquinas</h3>
+          <form id="formRecurso">
+            <input type="hidden" id="recursoId" />
+            <div class="field">
+              <label>Tipo</label>
+              <select id="recursoTipo">
+                <option>Humano</option>
+                <option>Máquina</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Recurso</label>
+              <input id="recursoNome" placeholder="Ex.: Operador / Máquina 01" required />
+            </div>
+            <div class="field">
+              <label>Horas disponíveis</label>
+              <input id="recursoHoras" type="number" step="0.01" required />
+            </div>
+            <div class="field">
+              <label>Produção por hora</label>
+              <input id="recursoProdHora" type="number" step="0.01" required />
+            </div>
+            <div class="field full">
+              <button class="btn" type="submit">Salvar / Atualizar Recurso</button>
+            </div>
+          </form>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Recurso</th>
+                  <th>Horas disponíveis</th>
+                  <th>Produção/hora</th>
+                  <th>Capacidade total</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="listaRecursos"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="mrp" class="section">
+        <div class="card">
+          <h3>MRP - Cálculo Automático de Materiais</h3>
+          <p style="color: var(--gray); margin-top: 8px;">Necessidade = Demanda Explodida - Estoque Atual - Recebimentos Programados + Estoque de Segurança</p>
+          <button class="btn secondary no-print" style="margin-top: 14px;" onclick="calcularMRP()">Calcular MRP</button>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Produto</th>
+                  <th>Período</th>
+                  <th>Componente</th>
+                  <th>Nec. Bruta</th>
+                  <th>Estoque</th>
+                  <th>Segurança</th>
+                  <th>Comprar/Produzir</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="listaMrp"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="crp" class="section">
+        <div class="card">
+          <h3>CRP - Capacidade Produtiva</h3>
+          <p style="color: var(--gray); margin-top: 8px;">Compara a demanda planejada com a capacidade total dos recursos.</p>
+          <button class="btn secondary no-print" style="margin-top: 14px;" onclick="calcularCRP()">Calcular CRP</button>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Recurso</th>
+                  <th>Tipo</th>
+                  <th>Capacidade</th>
+                  <th>Demanda Total</th>
+                  <th>Saldo</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="listaCrp"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <section id="usuarios" class="section">
+        <div class="card">
+          <h3>Cadastro de Usuários e Acessos</h3>
+          <p style="color: var(--gray); margin-top: 8px;">Controle hierárquico: Funcionário, Supervisor e Administrador.</p>
+          <form id="formUsuario">
+            <input type="hidden" id="usuarioId" />
+            <div class="field"><label>Nome completo</label><input id="usuarioNome" placeholder="Nome completo do usuário" required /></div>
+            <div class="field"><label>Função</label><select id="usuarioPerfil"><option>Funcionário</option><option>Supervisor</option><option>Administrador</option></select></div>
+            <div class="field"><label>Matrícula</label><input id="usuarioMatricula" placeholder="Ex.: FUN001" required /></div>
+            <div class="field"><label>Senha fácil padrão</label><input id="usuarioSenha" type="text" value="123456" readonly /></div>
+            <div class="field two"><label>Status</label><select id="usuarioStatus"><option>Ativo</option><option>Inativo</option></select></div>
+            <div class="field two"><label>Mensagem automática</label><input id="usuarioMensagem" value="É necessário alterar sua senha" readonly /></div>
+            <div class="field full"><button class="btn" type="submit">Cadastrar / Atualizar Usuário</button></div>
+          </form>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome completo</th>
+                  <th>Matrícula</th>
+                  <th>Função</th>
+                  <th>Permissões</th>
+                  <th>Status</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="listaUsuarios"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="relatorios" class="section">
+        <div class="card">
+          <h3>Relatório Executivo para Apresentação</h3>
+          <button class="btn secondary no-print" style="margin-top: 14px;" onclick="gerarRelatorio()">Gerar relatório</button>
+          <button class="btn dark no-print" style="margin-top: 14px;" onclick="window.print()">Exportar PDF</button>
+          <div id="relatorioBox" class="report-box" style="margin-top:18px;"></div>
+        </div>
+      </section>
+
+      <p class="footer-note">VELOFORCE - Artigos Esportivos — ERP de PCP com foco em eficiência, sustentabilidade, redução de custos e crescimento empresarial.</p>
+    </main>
+  </div>
+
+  <script>
+    const money = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const num = v => Number(v || 0).toLocaleString('pt-BR');
+
+    let produtos = [
+      { id: 1, codigo: 'PA001', nome: 'Peso de Musculação 10kg', unidade: 'un', imagem: '', custo: 42, preco: 89.9 }
+    ];
+
+    let bom = [
+      { id: 1, produtoId: 1, item: 'Ferro fundido', tipo: 'Matéria-prima', unidade: 'kg', qtd: 10, imagem: '' },
+      { id: 2, produtoId: 1, item: 'Revestimento emborrachado', tipo: 'Acabamento', unidade: 'kg', qtd: 0.8, imagem: '' },
+      { id: 3, produtoId: 1, item: 'Etiqueta de identificação', tipo: 'Embalagem/Identificação', unidade: 'un', qtd: 1, imagem: '' }
+    ];
+
+    let pmp = [
+      { id: 1, produtoId: 1, periodo: 'Semana 1', demanda: 500, recebimentos: 0 },
+      { id: 2, produtoId: 1, periodo: 'Semana 2', demanda: 800, recebimentos: 0 },
+      { id: 3, produtoId: 1, periodo: 'Semana 3', demanda: 1200, recebimentos: 0 },
+      { id: 4, produtoId: 1, periodo: 'Semana 4', demanda: 2000, recebimentos: 0 }
+    ];
+
+    let estoque = [
+      { id: 1, item: 'Ferro fundido', unidade: 'kg', atual: 8500, seguranca: 2500, custo: 4.8, lead: '10 dias' },
+      { id: 2, item: 'Revestimento emborrachado', unidade: 'kg', atual: 420, seguranca: 160, custo: 18.5, lead: '7 dias' },
+      { id: 3, item: 'Etiqueta de identificação', unidade: 'un', atual: 1500, seguranca: 500, custo: 0.35, lead: '3 dias' }
+    ];
+
+    let recursos = [
+      { id: 1, tipo: 'Humano', nome: 'Equipe de Fundição e Acabamento', horas: 160, prodHora: 18 },
+      { id: 2, tipo: 'Máquina', nome: 'Linha de Pintura e Revestimento', horas: 140, prodHora: 22 }
+    ];
+
+    let usuarios = [
+      { id: 1, nome: 'Administrador VELOFORCE', matricula: 'ADM001', senha: '123456', perfil: 'Administrador', status: 'Ativo', precisaAlterarSenha: true },
+      { id: 2, nome: 'Supervisor de Produção', matricula: 'SUP001', senha: '123456', perfil: 'Supervisor', status: 'Ativo', precisaAlterarSenha: true },
+      { id: 3, nome: 'Funcionário PCP', matricula: 'FUN001', senha: '123456', perfil: 'Funcionário', status: 'Ativo', precisaAlterarSenha: true }
+    ];
+
+    let usuarioAtivoId = null;
+
+    let mrpResultado = [];
+    let crpResultado = [];
+    let chartDemanda, chartEstoque;
+
+
+    const nivelPermissao = { 'Funcionário': 1, 'Supervisor': 2, 'Administrador': 3 };
+
+    function usuarioAtivo() { return usuarios.find(u => Number(u.id) === Number(usuarioAtivoId)); }
+    function temPermissao(nivelMinimo) { const u = usuarioAtivo(); return u && u.status === 'Ativo' && nivelPermissao[u.perfil] >= nivelMinimo; }
+    function exigirPermissao(nivelMinimo, acao) { if (!temPermissao(nivelMinimo)) { alertar('Acesso negado: seu perfil não tem permissão para ' + acao + '.'); return false; } return true; }
+    function normalizarMatricula(v) { return String(v || '').trim().toUpperCase(); }
+    function mostrarLogin() { document.getElementById('loginScreen').style.display = 'flex'; document.getElementById('trocaSenhaScreen').style.display = 'none'; document.querySelector('.app').style.display = 'none'; }
+    function liberarSistema() { document.getElementById('loginScreen').style.display = 'none'; document.getElementById('trocaSenhaScreen').style.display = 'none'; document.querySelector('.app').style.display = 'flex'; aplicarPermissoes(); atualizarTudo(); }
+    function fazerLogin() {
+      const matricula = normalizarMatricula(document.getElementById('loginMatricula').value);
+      const senha = document.getElementById('loginSenha').value;
+      const u = usuarios.find(x => normalizarMatricula(x.matricula) === matricula && x.senha === senha && x.status === 'Ativo');
+      if (!u) { alert('Matrícula ou senha inválida.'); return; }
+      usuarioAtivoId = u.id; sessionStorage.setItem('veloforceUsuarioAtivoId', String(u.id));
+      if (u.senha === '123456' || u.precisaAlterarSenha) { document.getElementById('loginScreen').style.display = 'none'; document.getElementById('trocaSenhaScreen').style.display = 'flex'; document.querySelector('.app').style.display = 'none'; return; }
+      liberarSistema();
+    }
+    function alterarSenhaObrigatoria() {
+      const nova = document.getElementById('novaSenha').value;
+      const confirma = document.getElementById('confirmaSenha').value;
+      const u = usuarioAtivo();
+      if (!u) return mostrarLogin();
+      if (!nova || nova.length < 6) { alert('A nova senha deve ter pelo menos 6 caracteres.'); return; }
+      if (nova === '123456') { alert('A nova senha não pode ser a senha fácil 123456.'); return; }
+      if (nova !== confirma) { alert('As senhas não conferem.'); return; }
+      u.senha = nova; u.precisaAlterarSenha = false; salvarLocal(false);
+      document.getElementById('novaSenha').value = ''; document.getElementById('confirmaSenha').value = '';
+      liberarSistema(); alertar('Senha alterada com sucesso.');
+    }
+    function logout() { usuarioAtivoId = null; sessionStorage.removeItem('veloforceUsuarioAtivoId'); document.getElementById('loginMatricula').value = ''; document.getElementById('loginSenha').value = ''; mostrarLogin(); }
+    function aplicarPermissoes() {
+      const u = usuarioAtivo();
+      let bar = document.getElementById('permissionBar');
+      if (!bar) { bar = document.createElement('div'); bar.id = 'permissionBar'; bar.className = 'permission-bar'; document.querySelector('main').insertBefore(bar, document.querySelector('main').children[1]); }
+      if (!u) { bar.innerText = 'Usuário não autenticado.'; return; }
+      const chip = document.getElementById('userInfoTop'); if (chip) chip.innerText = u.nome + ' | ' + u.perfil;
+      bar.innerText = 'Usuário logado: ' + u.nome + ' | Matrícula: ' + u.matricula + ' | Perfil: ' + u.perfil + ' | Permissões: ' + permissoesTexto(u.perfil);
+    }
+    function permissoesTexto(perfil) { if (perfil === 'Funcionário') return 'cadastro e edição de Produto Pai e BOM'; if (perfil === 'Supervisor') return 'funções do Funcionário + cadastro de Recursos, cálculo de MRP/CRP e geração de relatórios'; return 'acesso total, incluindo cadastro de usuários'; }
+
+    function showSection(id, btn) {
+      if (['pmp','estoque','usuarios'].includes(id) && !exigirPermissao(3, 'acessar esta área')) return;
+      if (['recursos','mrp','crp','relatorios'].includes(id) && !exigirPermissao(2, 'acessar esta área')) return;
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('pageTitle').innerText = btn.innerText.replace(/[📊📦🧱📅🏭⚙️🧠📈👥📄]/g, '').trim();
+      atualizarTudo();
+    }
+
+    function alertar(msg) {
+      const a = document.getElementById('alert');
+      a.innerText = msg;
+      a.style.display = 'block';
+      setTimeout(() => a.style.display = 'none', 2500);
+    }
+
+    function getProduto(id) {
+      return produtos.find(p => Number(p.id) === Number(id));
+    }
+
+    function atualizarSelects() {
+      const options = produtos.map(p => `<option value="${p.id}">${p.codigo} - ${p.nome}</option>`).join('');
+      ['bomProduto', 'pmpProduto'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = options;
+      });
+    }
+
+    document.getElementById('formProduto').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!exigirPermissao(1, 'salvar Produto Pai')) return;
+      const id = document.getElementById('produtoId').value || Date.now();
+      const obj = {
+        id: Number(id),
+        codigo: produtoCodigo.value,
+        nome: produtoNome.value,
+        unidade: produtoUnidade.value,
+        imagem: produtoImagem.value,
+        custo: Number(produtoCusto.value || 0),
+        preco: Number(produtoPreco.value || 0)
+      };
+
+      const i = produtos.findIndex(x => x.id === obj.id);
+      i >= 0 ? produtos[i] = obj : produtos.push(obj);
+      e.target.reset();
+      produtoId.value = '';
+      atualizarTudo();
+      alertar('Produto salvo com sucesso.');
+    });
+
+    function editarProduto(id) {
+      const p = getProduto(id);
+      produtoId.value = p.id;
+      produtoCodigo.value = p.codigo;
+      produtoNome.value = p.nome;
+      produtoUnidade.value = p.unidade;
+      produtoImagem.value = p.imagem;
+      produtoCusto.value = p.custo;
+      produtoPreco.value = p.preco;
+      alertar('Produto carregado para edição.');
+    }
+
+    document.getElementById('formBom').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!exigirPermissao(1, 'salvar BOM')) return;
+      const id = document.getElementById('bomId').value || Date.now();
+      const obj = {
+        id: Number(id),
+        produtoId: Number(bomProduto.value),
+        item: bomItem.value,
+        tipo: bomTipo.value,
+        unidade: bomUnidade.value,
+        qtd: Number(bomQtd.value || 0),
+        imagem: bomImagem.value
+      };
+      const i = bom.findIndex(x => x.id === obj.id);
+      i >= 0 ? bom[i] = obj : bom.push(obj);
+      e.target.reset();
+      bomId.value = '';
+      atualizarTudo();
+      alertar('BOM salvo com sucesso.');
+    });
+
+    function editarBom(id) {
+      const b = bom.find(x => x.id === id);
+      bomId.value = b.id;
+      bomProduto.value = b.produtoId;
+      bomItem.value = b.item;
+      bomTipo.value = b.tipo;
+      bomUnidade.value = b.unidade;
+      bomQtd.value = b.qtd;
+      bomImagem.value = b.imagem;
+      alertar('Item BOM carregado para edição.');
+    }
+
+    document.getElementById('formPmp').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!exigirPermissao(3, 'salvar PMP')) return;
+      const id = document.getElementById('pmpId').value || Date.now();
+      const obj = {
+        id: Number(id),
+        produtoId: Number(pmpProduto.value),
+        periodo: pmpPeriodo.value,
+        demanda: Number(pmpDemanda.value || 0),
+        recebimentos: Number(pmpRecebimentos.value || 0)
+      };
+      const i = pmp.findIndex(x => x.id === obj.id);
+      i >= 0 ? pmp[i] = obj : pmp.push(obj);
+      e.target.reset();
+      pmpId.value = '';
+      atualizarTudo();
+      alertar('PMP salvo com sucesso.');
+    });
+
+    function editarPmp(id) {
+      const p = pmp.find(x => x.id === id);
+      pmpId.value = p.id;
+      pmpProduto.value = p.produtoId;
+      pmpPeriodo.value = p.periodo;
+      pmpDemanda.value = p.demanda;
+      pmpRecebimentos.value = p.recebimentos;
+      alertar('PMP carregado para edição.');
+    }
+
+    document.getElementById('formEstoque').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!exigirPermissao(3, 'salvar Estoque')) return;
+      const id = document.getElementById('estoqueId').value || Date.now();
+      const obj = {
+        id: Number(id),
+        item: estoqueItem.value,
+        unidade: estoqueUnidade.value,
+        atual: Number(estoqueAtual.value || 0),
+        seguranca: Number(estoqueSeguranca.value || 0),
+        custo: Number(estoqueCusto.value || 0),
+        lead: estoqueLead.value
+      };
+      const i = estoque.findIndex(x => x.id === obj.id);
+      i >= 0 ? estoque[i] = obj : estoque.push(obj);
+      e.target.reset();
+      estoqueId.value = '';
+      atualizarTudo();
+      alertar('Estoque salvo com sucesso.');
+    });
+
+    function editarEstoque(id) {
+      const e = estoque.find(x => x.id === id);
+      estoqueId.value = e.id;
+      estoqueItem.value = e.item;
+      estoqueUnidade.value = e.unidade;
+      estoqueAtual.value = e.atual;
+      estoqueSeguranca.value = e.seguranca;
+      estoqueCusto.value = e.custo;
+      estoqueLead.value = e.lead;
+      alertar('Estoque carregado para edição.');
+    }
+
+    document.getElementById('formRecurso').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!exigirPermissao(2, 'salvar Recursos')) return;
+      const id = document.getElementById('recursoId').value || Date.now();
+      const obj = {
+        id: Number(id),
+        tipo: recursoTipo.value,
+        nome: recursoNome.value,
+        horas: Number(recursoHoras.value || 0),
+        prodHora: Number(recursoProdHora.value || 0)
+      };
+      const i = recursos.findIndex(x => x.id === obj.id);
+      i >= 0 ? recursos[i] = obj : recursos.push(obj);
+      e.target.reset();
+      recursoId.value = '';
+      atualizarTudo();
+      alertar('Recurso salvo com sucesso.');
+    });
+
+    function editarRecurso(id) {
+      if (!exigirPermissao(2, 'editar Recursos')) return;
+      const r = recursos.find(x => x.id === id);
+      recursoId.value = r.id;
+      recursoTipo.value = r.tipo;
+      recursoNome.value = r.nome;
+      recursoHoras.value = r.horas;
+      recursoProdHora.value = r.prodHora;
+      alertar('Recurso carregado para edição.');
+    }
+
+    function renderProdutos() {
+      listaProdutos.innerHTML = produtos.map(p => {
+        const margem = p.preco ? ((p.preco - p.custo) / p.preco) * 100 : 0;
+        return `
+          <tr>
+            <td>${p.imagem ? `<img src="${p.imagem}" class="product-img">` : '—'}</td>
+            <td>${p.codigo}</td>
+            <td><strong>${p.nome}</strong></td>
+            <td>${p.unidade}</td>
+            <td>${money(p.custo)}</td>
+            <td>${money(p.preco)}</td>
+            <td><span class="tag ${margem >= 30 ? 'green' : margem >= 15 ? 'yellow' : 'red'}">${margem.toFixed(1)}%</span></td>
+            <td><button class="btn mini secondary" onclick="editarProduto(${p.id})">Editar</button></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderBom() {
+      listaBom.innerHTML = bom.map(b => {
+        const p = getProduto(b.produtoId);
+        return `
+          <tr>
+            <td>${b.imagem ? `<img src="${b.imagem}" class="product-img">` : '—'}</td>
+            <td>${p ? p.nome : 'Produto não encontrado'}</td>
+            <td><strong>${b.item}</strong></td>
+            <td>${b.tipo || '—'}</td>
+            <td>${b.unidade}</td>
+            <td>${b.qtd}</td>
+            <td><button class="btn mini secondary" onclick="editarBom(${b.id})">Editar</button></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderPmp() {
+      listaPmp.innerHTML = pmp.map(p => {
+        const prod = getProduto(p.produtoId);
+        return `
+          <tr>
+            <td>${prod ? prod.nome : 'Produto não encontrado'}</td>
+            <td>${p.periodo}</td>
+            <td>${num(p.demanda)}</td>
+            <td>${num(p.recebimentos)}</td>
+            <td><button class="btn mini secondary" onclick="editarPmp(${p.id})">Editar</button></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderEstoque() {
+      listaEstoque.innerHTML = estoque.map(e => {
+        const critico = e.atual < e.seguranca;
+        return `
+          <tr>
+            <td><strong>${e.item}</strong></td>
+            <td>${e.unidade}</td>
+            <td>${num(e.atual)}</td>
+            <td>${num(e.seguranca)}</td>
+            <td><span class="tag ${critico ? 'red' : 'green'}">${critico ? 'Crítico' : 'Saudável'}</span></td>
+            <td>${money(e.custo)}</td>
+            <td>${e.lead || '—'}</td>
+            <td><button class="btn mini secondary" onclick="editarEstoque(${e.id})">Editar</button></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderRecursos() {
+      listaRecursos.innerHTML = recursos.map(r => {
+        const cap = r.horas * r.prodHora;
+        return `
+          <tr>
+            <td><span class="tag blue">${r.tipo}</span></td>
+            <td><strong>${r.nome}</strong></td>
+            <td>${num(r.horas)}</td>
+            <td>${num(r.prodHora)}</td>
+            <td>${num(cap)}</td>
+            <td><button class="btn mini secondary" onclick="editarRecurso(${r.id})">Editar</button></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+
+    document.getElementById('formUsuario').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!exigirPermissao(3, 'cadastrar ou editar usuários')) return;
+      const id = document.getElementById('usuarioId').value || Date.now();
+      const matricula = normalizarMatricula(usuarioMatricula.value);
+      const matriculaDuplicada = usuarios.some(u => normalizarMatricula(u.matricula) === matricula && Number(u.id) !== Number(id));
+      if (matriculaDuplicada) { alertar('Já existe um usuário cadastrado com esta matrícula.'); return; }
+      const existente = usuarios.find(x => Number(x.id) === Number(id));
+      const obj = { id: Number(id), nome: usuarioNome.value, matricula, senha: existente ? existente.senha : '123456', perfil: usuarioPerfil.value, status: usuarioStatus.value, precisaAlterarSenha: existente ? existente.precisaAlterarSenha : true };
+      const i = usuarios.findIndex(x => x.id === obj.id);
+      i >= 0 ? usuarios[i] = obj : usuarios.push(obj);
+      e.target.reset(); usuarioId.value = ''; usuarioSenha.value = '123456'; usuarioMensagem.value = 'É necessário alterar sua senha';
+      atualizarTudo(); alertar('Usuário salvo com senha fácil 123456. No primeiro acesso, ele deverá alterar a senha.');
+    });
+    function editarUsuario(id) {
+      if (!exigirPermissao(3, 'editar usuários')) return;
+      const u = usuarios.find(x => x.id === id);
+      usuarioId.value = u.id; usuarioNome.value = u.nome; usuarioMatricula.value = u.matricula; usuarioPerfil.value = u.perfil; usuarioStatus.value = u.status; usuarioSenha.value = '123456'; usuarioMensagem.value = u.precisaAlterarSenha ? 'É necessário alterar sua senha' : 'Senha já alterada pelo usuário';
+      alertar('Usuário carregado para edição.');
+    }
+    function resetarSenhaUsuario(id) {
+      if (!exigirPermissao(3, 'resetar senha de usuários')) return;
+      const u = usuarios.find(x => x.id === id); if (!u) return;
+      u.senha = '123456'; u.precisaAlterarSenha = true; salvarLocal(false); atualizarTudo(); alertar('Senha resetada para 123456. O usuário deverá alterar no próximo acesso.');
+    }
+    function renderUsuarios() {
+      const tbody = document.getElementById('listaUsuarios'); if (!tbody) return;
+      tbody.innerHTML = usuarios.map(u => `
+        <tr>
+          <td><strong>${u.nome}</strong></td>
+          <td>${u.matricula || '—'}</td>
+          <td><span class="tag ${u.perfil === 'Administrador' ? 'red' : u.perfil === 'Supervisor' ? 'yellow' : 'blue'}">${u.perfil}</span></td>
+          <td>${permissoesTexto(u.perfil)}</td>
+          <td><span class="tag ${u.status === 'Ativo' ? 'green' : 'red'}">${u.status}</span>${u.precisaAlterarSenha ? '<br><small>Alteração de senha pendente</small>' : ''}</td>
+          <td class="actions"><button class="btn mini secondary" onclick="editarUsuario(${u.id})">Editar</button><button class="btn mini warning" onclick="resetarSenhaUsuario(${u.id})">Resetar senha</button></td>
+        </tr>`).join('');
+    }
+
+    function calcularMRP() {
+      if (!exigirPermissao(2, 'calcular MRP')) return;
+      mrpResultado = gerarMRPInterno();
+      renderMRP();
+      atualizarDashboard();
+      alertar('MRP calculado com sucesso.');
+    }
+
+    function renderMRP() {
+      listaMrp.innerHTML = mrpResultado.map(r => `
+        <tr>
+          <td>${r.produto}</td>
+          <td>${r.periodo}</td>
+          <td><strong>${r.componente}</strong></td>
+          <td>${num(r.necessidadeBruta)}</td>
+          <td>${num(r.atual)}</td>
+          <td>${num(r.seguranca)}</td>
+          <td>${num(r.comprar)}</td>
+          <td><span class="tag ${r.comprar > 0 ? 'red' : 'green'}">${r.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function calcularCRP() {
+      if (!exigirPermissao(2, 'calcular CRP')) return;
+      crpResultado = gerarCRPInterno();
+      renderCRP();
+      atualizarDashboard();
+      alertar('CRP calculado com sucesso.');
+    }
+
+    function renderCRP() {
+      listaCrp.innerHTML = crpResultado.map(r => `
+        <tr>
+          <td><strong>${r.recurso}</strong></td>
+          <td>${r.tipo}</td>
+          <td>${num(r.capacidade)}</td>
+          <td>${num(r.demandaTotal)}</td>
+          <td>${num(r.saldo)}</td>
+          <td><span class="tag ${r.saldo >= 0 ? 'green' : 'red'}">${r.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function atualizarDashboard() {
+      const demandaTotal = pmp.reduce((s, x) => s + Number(x.demanda || 0), 0);
+      const criticos = estoque.filter(e => e.atual < e.seguranca).length;
+      const gargalos = crpResultado.filter(r => r.saldo < 0).length;
+      const valorEstoqueParado = estoque.reduce((s, e) => s + Math.max(0, e.atual - e.seguranca) * e.custo, 0);
+      const economia = valorEstoqueParado * 0.18 + demandaTotal * 0.75;
+
+      mEconomia.innerText = money(economia);
+      mProducao.innerText = num(demandaTotal);
+      mCriticos.innerText = criticos;
+      mGargalos.innerText = gargalos;
+
+      atualizarGraficos();
+    }
+
+    function atualizarGraficos() {
+      const labels = pmp.map(x => x.periodo);
+      const dadosDemanda = pmp.map(x => x.demanda);
+
+      if (chartDemanda) chartDemanda.destroy();
+      chartDemanda = new Chart(document.getElementById('chartDemanda'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Demanda planejada',
+            data: dadosDemanda,
+            tension: 0.35,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: true } }
+        }
+      });
+
+      if (chartEstoque) chartEstoque.destroy();
+      chartEstoque = new Chart(document.getElementById('chartEstoque'), {
+        type: 'bar',
+        data: {
+          labels: estoque.map(e => e.item),
+          datasets: [
+            { label: 'Estoque atual', data: estoque.map(e => e.atual) },
+            { label: 'Segurança', data: estoque.map(e => e.seguranca) }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: true } }
+        }
+      });
+    }
+
+    function gerarRelatorio() {
+      if (!exigirPermissao(2, 'gerar relatórios')) return;
+      const mrpBase = gerarMRPInterno();
+      const crpBase = gerarCRPInterno();
+      if (temPermissao(2)) {
+        mrpResultado = mrpBase;
+        crpResultado = crpBase;
+        renderMRP();
+        renderCRP();
+      }
+
+      const demandaTotal = pmp.reduce((s, x) => s + Number(x.demanda || 0), 0);
+      const itensCriticos = estoque.filter(e => e.atual < e.seguranca);
+      const gargalos = crpBase.filter(r => r.saldo < 0);
+      const compras = mrpBase.filter(r => r.comprar > 0);
+      const valorCompras = compras.reduce((s, r) => {
+        const est = estoque.find(e => e.item.toLowerCase() === r.componente.toLowerCase());
+        return s + r.comprar * (est ? est.custo : 0);
+      }, 0);
+
+      relatorioBox.innerText =
+`RELATÓRIO EXECUTIVO — VELOFORCE - ARTIGOS ESPORTIVOS
+
+1. VISÃO GERAL
+O VELOFORCE - Artigos Esportivos é um ERP de PCP desenvolvido para indústrias de artigos esportivos, com foco em pesos de musculação, equipamentos de ginástica e caneleiras, apoiando redução de custos, controle de estoque, planejamento produtivo, cálculo de materiais e gestão de capacidade.
+
+2. PRODUÇÃO PLANEJADA
+Total planejado no PMP: ${num(demandaTotal)} unidades.
+
+3. MRP — NECESSIDADE DE MATERIAIS
+Itens com necessidade de compra/produção: ${compras.length}
+Valor estimado de compras: ${money(valorCompras)}
+
+4. ESTOQUE
+Itens críticos abaixo do estoque de segurança: ${itensCriticos.length}
+${itensCriticos.map(e => '- ' + e.item + ': atual ' + num(e.atual) + ' / segurança ' + num(e.seguranca)).join('\n') || 'Nenhum item crítico identificado.'}
+
+5. CRP — CAPACIDADE PRODUTIVA
+Gargalos identificados: ${gargalos.length}
+${gargalos.map(g => '- ' + g.recurso + ': saldo ' + num(g.saldo)).join('\n') || 'Nenhum gargalo identificado.'}
+
+6. SUSTENTABILIDADE
+O sistema contribui para a sustentabilidade ao reduzir desperdícios, evitar compras desnecessárias, controlar estoque parado e melhorar o uso de máquinas, pessoas e matérias-primas.
+
+7. RENTABILIDADE
+A plataforma pode ser comercializada como SaaS, com cobrança mensal por empresa, implantação assistida, suporte técnico e customizações pagas.
+
+8. VISÃO DE FUTURO
+Evolução recomendada: autenticação de usuários, banco PostgreSQL, API, integração com financeiro, compras, BI, IA para previsão de demanda e relatórios automáticos para diretoria.`;
+
+      alertar('Relatório executivo gerado.');
+    }
+
+    function salvarLocal(showMsg = true) {
+      localStorage.setItem('veloforceData', JSON.stringify({ produtos, bom, pmp, estoque, recursos, usuarios, usuarioAtivoId }));
+      if (showMsg) alertar('Dados salvos no navegador.');
+    }
+
+    function carregarLocal(showMsg = false) {
+      const data = localStorage.getItem('veloforceData') || localStorage.getItem('indProducaoData');
+      if (!data) { if (showMsg) alertar('Nenhum dado salvo encontrado.'); return; }
+      const obj = JSON.parse(data);
+      produtos = obj.produtos || [];
+      bom = obj.bom || [];
+      pmp = obj.pmp || [];
+      estoque = obj.estoque || [];
+      recursos = obj.recursos || [];
+      usuarios = obj.usuarios || usuarios;
+      usuarioAtivoId = obj.usuarioAtivoId || usuarioAtivoId;
+      atualizarTudo();
+      if (showMsg) alertar('Dados carregados com sucesso.');
+    }
+
+    function atualizarTudo() {
+      atualizarSelects();
+      renderProdutos();
+      renderBom();
+      renderPmp();
+      renderEstoque();
+      renderRecursos();
+      renderUsuarios();
+      renderMRP();
+      renderCRP();
+      atualizarDashboard();
+      aplicarPermissoes();
+    }
+
+    carregarLocal();
+    const sessao = sessionStorage.getItem('veloforceUsuarioAtivoId');
+    if (sessao && usuarios.some(u => Number(u.id) === Number(sessao) && u.status === 'Ativo')) {
+      usuarioAtivoId = Number(sessao);
+      const u = usuarioAtivo();
+      if (u && (u.senha === '123456' || u.precisaAlterarSenha)) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('trocaSenhaScreen').style.display = 'flex';
+        document.querySelector('.app').style.display = 'none';
+      } else {
+        liberarSistema();
+      }
+    } else {
+      mostrarLogin();
+    }
+  </script>
+</body>
+</html>
