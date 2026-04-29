@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VixPar Manutenção - ERP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="logo.jpeg" alt="VixPar Logo" class="logo">
+            <span class="system-name">VixPar Manutenção</span>
+        </div>
+        <nav class="nav-menu">
+            <a href="#">Dashboard</a>
+            <a href="#">Produtos</a>
+            <a href="#">BOM</a>
+            <a href="#">Estoque</a>
+            <a href="#">Recursos</a>
+            <a href="#">Ordens</a>
+            <a href="#">PCP</a>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Produtos</a></li>
+                <li><a href="#">BOM</a></li>
+                <li><a href="#">Estoque</a></li>
+                <li><a href="#">Recursos</a></li>
+                <li><a href="#">Ordens</a></li>
+                <li><a href="#">PCP</a></li>
+            </ul>
+        </aside>
+
+        <!-- Dashboard Content -->
+        <main class="dashboard">
+            <h1>Bem-vindo ao VixPar Manutenção</h1>
+            <div class="cards-container">
+                <div class="card">
+                    <h2>Produção Total</h2>
+                    <p id="producao-total">0</p>
+                </div>
+                <div class="card">
+                    <h2>Custos</h2>
+                    <p id="custos">R$ 0,00</p>
+                </div>
+                <div class="card">
+                    <h2>Eficiência</h2>
+                    <p id="eficiencia">0%</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
